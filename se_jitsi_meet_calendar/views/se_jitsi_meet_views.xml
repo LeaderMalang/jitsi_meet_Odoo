@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_calendar_event_inherit_form" model="ir.ui.view">
+            <field name="name">calendar.event.form.inherit</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='allday']" position="after">
+                     <field name="is_jitsi_meet" />
+                </xpath>
+                 <xpath expr="//sheet"  position="before">
+                <header attrs="{'invisible': [('is_jitsi_meet', '=', False)]}">
+                    <field name="current_user" invisible="1"/>
+                            <field name="create_uid" invisible="1"/>
+                            <field name="closed" invisible="1"/>
+                            <button name="open" type="object" string="Join Meeting" class="oe_highlight"
+                                    attrs="{'invisible':['|',('closed','=',True),('create_uid','=',False)]}"/>
+                            <button name="action_close_meeting" string="Close Meeting" type="object"
+                                    groups="base.group_user"
+                                    attrs="{'invisible':['|',('closed','=',True),('create_uid','=',False)]}"/>
+                            <button name="action_reopen_meeting" string="Reopen Meeting" type="object"
+                                    groups="base.group_user"
+                                    attrs="{'invisible':['|',('closed','!=',True),('create_uid','=',False)]}"/>
+                            <button name="send_mail" type="object" string="Send Invitation by Mail" class="oe_highlight"
+                                    attrs="{'invisible':['|',('closed','=',True),('create_uid','=',False)]}"/>
+                </header>
+                 </xpath>
+                <xpath expr="//page[@name='page_misc']" position="after">
+                    <page string="Jisti" attrs="{'invisible': [('is_jitsi_meet', '=', False)]}">
+
+                        <group>
+                            <field name="date_delay" widget="float_time"/>
+                            <field name="url" invisible="1"/>
+                            <field name="url_to_link" string="Share Link"/>
+                            <field name="is_password_required"/>
+                            <field name="user" attrs="{'invisible': [('is_password_required', '!=', True)]}"/>
+                            <field name="password" attrs="{'invisible': [('is_password_required', '!=', True)]}"/>
+
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+
+
